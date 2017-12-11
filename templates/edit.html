@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>编辑问卷题目</title>
+    <script src="/static/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <style>
+        .head {
+            background-color: #2e6da4;
+            height: 30px;
+            line-height: 30px;
+
+        }
+
+        .head div a {
+            color: whitesmoke;
+        }
+
+        .head div {
+            margin-right: 30px;
+        }
+
+        .col-md-2 {
+            margin-right: -30px;
+        }
+
+        .menu {
+            border: solid 1px grey;
+            height: 800px;
+        }
+
+        .two-btn .btn {
+            margin: 20px 0;
+        }
+
+        .two-btn {
+            height: 80px;
+        }
+        form{
+            padding: 20px 0;
+        }
+
+        .glyphicon-remove{
+            padding: 20px;
+        }
+{#        .question{#}
+{#            background:#dce7f4 ;#}
+{#        }#}
+        ol {
+            padding: 0;
+            list-style: none;
+            counter-reset: sectioncounter
+        }
+
+        ol > li:before {
+            content: '问题' counter(sectioncounter) ':';
+            counter-increment: sectioncounter;
+            font-size: 18px;
+            color: #d4d4d4;
+        }
+
+        ol > li:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+
+        .tp{
+            display: inline-block;
+        }
+
+
+    </style>
+
+
+</head>
+<body>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="head">
+                <span>CRM系统</span>
+            </div>
+            <div class="menu">
+                <div>xxxxxxxxxxxx</div>
+                <div>xxxxxxxxxxxx</div>
+                <div>xxxxxxxxxxxx</div>
+                <div>xxxxxxxxxxxx</div>
+                <div>xxxxxxxxxxxx</div>
+                <div>xxxxxxxxxxxx</div>
+                <div>xxxxxxxxxxxx</div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="head">
+                <div class="pull-left"><a href="">平台首页</a></div>
+                <div class="pull-left"><a href="">资产首页</a></div>
+                <div class="pull-right"><a href="">任务</a></div>
+                <div class="pull-right"><a href="">通知</a></div>
+                <div class="pull-right"><a href="">消息</a></div>
+            </div>
+            <div class="content">
+                <div class="two-btn">
+                    <div class="pull-right">
+
+                            <button class="btn btn-success " id="add-btn">添加</button>
+
+
+                            <button class="btn btn-primary" id="save-btn">保存</button>
+
+                    </div>
+                </div>
+
+
+                <ol class="que">
+                    {% for item in form_list %}
+                        <li pk="{{ item.obj.id }}">
+                            <div class="question">
+                                <div class="pull-right">
+                                    <a href="javascript:;"><span class="glyphicon glyphicon-remove"></span></a>
+                                </div>
+
+                    <div class="row">
+
+                        <div class="col-md-8 col-md-offset-1">
+
+                            <div class="row">
+                                <form class="form-horizontal">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">问题：</label>
+                                        <div class="col-sm-9">
+                                            {{ item.form.caption }}
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group typeselect">
+                                        <label class="col-sm-2 control-label">类型：</label>
+                                        <div class="col-sm-10 type">
+                                            {{ item.form.tp }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a href="javascript:;" class="{{ item.add_pic }} ">{{ item.add_a }}</a>
+                                            <ul>
+                                                {% for v in item.options %}
+                                                    <li id="{{ v.obj.id }}">{{ v.form }}<a href="javascript:;"><span class="glyphicon glyphicon-remove"></span></a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                        </li>
+                    {% endfor %}
+                </ol>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    //更改问题类型
+    $('.que').on('change','.tp',function () {
+            var d=$(this).val()
+
+            if(d == 2) {
+
+                var x='<a href="javascript:;" class="glyphicon glyphicon-plus">添加选项</a>'
+                $(this).next().html('添加选项').attr({'class':'glyphicon glyphicon-plus add-ques','href':'javascript:;'})
+                var s='<li id="100100100010011111111">选项名称:<input type="text" id="id_name"> 选项对应的分值:<input type="text" id="id_score"><a href="javascript:;"><span class="glyphicon glyphicon-remove"></span></a></li>'
+                $(this).next().next().append(s)
+            }
+            else{
+                $(this).next().next().children('li').remove()
+                $(this).next().html('').attr({'class':''})
+
+            }
+
+        })
+
+    //添加选项
+    $('.que').on('click','.add-ques',function () {
+        $(this).next().append('<li id="100100100010011111111">选项名称:<input type="text" id="id_name"> 选项对应的分值:<input type="text" id="id_score"><a href="javascript:;"><span class="glyphicon glyphicon-remove"></span></a></li>')
+    })
+
+    //删除选项
+    $('.que').on('click','.question .pull-right a',function () {
+        $(this).parent().parent().parent().remove()
+    })
+
+
+    //删除整个问题
+    $('.que').on('click','.typeselect li a',function () {
+        $(this).parent().remove()
+    })
+
+    //添加问题
+    $('#add-btn').click(function () {
+        var li=$('.content>ol>li:first').clone(true)
+        var a='<a href="javascript:;" class=" "></a><ul></ul>'
+        $('.content>ol').append(li)
+        $('.content>ol>li:last').find('.caption_input').val('')
+        $('.content>ol>li:last').find('select').value=1
+        $('.content>ol>li:last').find('select').next().html('')
+        $('.content>ol>li:last').find('select').next().next().children('li').remove()
+        $('.content>ol>li:last').attr('pk','10010010001001')
+    })
+
+
+    //ajax提交
+{#    $('.content').on('click','#save-btn',function () {#}
+{##}
+{#    })#}
+    //点击保存按钮得到所有问题的数据
+    var plist=[];
+    $('#save-btn').click(function () {
+
+        $('.content>ol>li').each(function(){
+            var dic={'id':undefined,'caption':undefined,'tp':undefined,'options':[]}
+            console.log($(this).attr('pk'))
+            dic['id']=$(this).attr('pk');
+            dic['caption']=$(this).find('.caption_input').val()
+            var tp=$(this).find('select').val()
+            if(tp==2){
+                $(this).find('li').each(function () {
+                    var option_dic={'id':undefined,'name':undefined,'score':undefined}
+
+                    option_dic['id']=$(this).attr('id')
+                    option_dic['name']=$(this).find('#id_name').val()
+                    option_dic['score']=$(this).find('#id_score').val()
+                    dic['options'].push(option_dic)
+                })
+            }
+            dic['tp']=tp
+            plist.push(dic)
+            });
+        console.log(plist)
+        $.ajax({
+            url:'/edit/{{ pid }}/',
+            type:'POST',
+            data:{
+                "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                'pid':{{ pid }},
+                'plist': JSON.stringify(plist),
+            },
+            success:function (data) {
+                JSON.parse(data)
+                if (data.msg){
+                    alert(data.msg)
+                }
+                else{
+                    alert('保存成功')
+                location.href='/index/'
+                }
+            }
+
+
+
+
+        })
+
+
+
+    })
+
+
+
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

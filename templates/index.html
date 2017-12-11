@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>index</title>
+    <script src="/static/jquery-3.2.1.min.js"></script>
+
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <style>
+        .p1 ul li{
+            list-style: none;
+            color: white;
+            float: left;
+            margin-right: 40px;
+            padding-bottom: 30px;
+        }
+
+
+
+
+    </style>
+
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">CRM系统</h3>
+                </div>
+                <div class="panel-body">
+                    <p>xxxxxxxxxx</p>
+                    <p>xxxxxxxxxx</p>
+                    <p>xxxxxxxxxx</p>
+                    <p>xxxxxxxxxx</p>
+                    <p>xxxxxxxxxx</p>
+                    <p>xxxxxxxxxx</p>
+                    <p>调查问卷列表</p>
+                </div>
+    </div>
+        </div>
+        <div class="col-md-10">
+            <div class="panel panel-default ">
+                <div class="panel-heading p1">
+                    <ul>
+                        <li><a href="">平台首页</a></li>
+                        <li><a href="">资产首页</a></li>
+                    </ul>
+                    <div class="pull-right">
+                        <ul>
+                            <li><a href="">任务</a></li>
+                            <li><a href="">通知</a></li>
+                            <li><a href="">消息</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="panel-body">
+                    <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">首页/数据列表</h3>
+                </div>
+                <div class="panel-body">
+                    <button class="btn btn-success">添加</button>
+                    <table class="table table-bordered">
+                        <th>
+{#                            <td><input type="checkbox"></td>#}
+                            <td>调查问卷名称</td>
+                            <td>问卷调查班级</td>
+                            <td>参与人数</td>
+                            <td>问卷选项</td>
+                            <td>调查地址</td>
+                            <td>查看评分</td>
+                            <td>操作</td>
+                        </th>
+                        {% for q in q_all %}
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><a href="">{{ q.title }}</a></td>
+                                <td>{{ q.cls.title }}</td>
+                                <td>0/{{ q.cls.student_set.count }}</td>
+                                <td><a href="/edit/{{ q.id }}/">编辑问卷</a></td>
+                                <td><a href="">xxxxxxxxxxx</a></td>
+                                <td><a href="">查看评分</a></td>
+                                <td><a href="">删除</a></td>
+
+
+
+                            </tr>
+
+
+
+
+                        {% endfor %}
+
+
+
+                    </table>
+
+
+                </div>
+    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>
